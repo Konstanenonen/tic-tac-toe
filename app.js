@@ -1,5 +1,6 @@
 "use strict";
 
+// Player objec factory function
 const Player = (name, marker) => {
   const _name = name;
   const _marker = marker;
@@ -21,6 +22,7 @@ const Player = (name, marker) => {
 const player1 = Player("Player1", "X");
 const player2 = Player("Player2", "O");
 
+// Module for the gameboard state
 const gameboard = (() => {
   let _gameboardArray = [null, null, null, null, null, null, null, null, null];
 
@@ -36,7 +38,7 @@ const gameboard = (() => {
     _gameboardArray[index] = marker;
 
     getBoardState();
-    
+
     displayController.displayBoard();
 
     displayController.changeTurn();
@@ -48,8 +50,8 @@ const gameboard = (() => {
   }
 })();
 
+// Module to display the game state
 const displayController = (() => {
-
   let _playerTurn = player1;
 
   const changeTurn = () => {
