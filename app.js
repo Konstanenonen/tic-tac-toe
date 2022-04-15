@@ -2,7 +2,7 @@
 
 // Player object factory function
 const Player = (name, marker) => {
-  const _name = name;
+  let _name = name;
   const _marker = marker;
 
   const getName = () => {
@@ -13,14 +13,16 @@ const Player = (name, marker) => {
     return _marker;
   };
 
+  const setName = (name) => {
+    _name = name;
+  }
+
   return {
     getName,
+    setName,
     getMarker,
   };
 };
-
-const player1 = Player("Player1", "X");
-const player2 = Player("Player2", "O");
 
 // Module for the gameboard state
 const gameboard = (() => {
@@ -57,7 +59,10 @@ const gameboard = (() => {
 
 // Module to actually play the game
 const game = (() => {
-  let _currentPlayer = player1;
+  const _player1 = Player("Player 1", "X");
+  const _player2 = Player("Player 2", "O");
+
+  let _currentPlayer = _player1;
 
   const addEventListeners = (marker) => {
     const tiles = document.getElementsByClassName("tile");
@@ -75,10 +80,10 @@ const game = (() => {
   };
 
   const changeTurn = () => {
-    if (_currentPlayer === player1) {
-      _currentPlayer = player2;
+    if (_currentPlayer === _player1) {
+      _currentPlayer = _player2;
     } else {
-      _currentPlayer = player1;
+      _currentPlayer = _player1;
     }
 
     gameboard.displayBoard();
@@ -104,11 +109,24 @@ const game = (() => {
     }
   };
 
+  const startGame = () => {
+    gameboard.displayBoard();
+    game.addEventListeners(_currentPlayer.getMarker());
+    document.querySelector(".game-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      _player1.setName(document.getElementById("player1").value);
+      _player2.setName(document.getElementById("player2").value);
+
+      document.querySelector(".display").innerText = `${_player1.getName()} = X\n${_player2.getName()} = O`;
+    })
+  }
+
   return {
     changeTurn,
     addEventListeners,
     checkForEnd,
+    startGame
   };
 })();
 
-game.changeTurn();
+game.startGame();
