@@ -66,16 +66,17 @@ const gameboard = (() => {
 const game = (() => {
   const _player1 = Player("Player 1", "X");
   const _player2 = Player("Player 2", "O");
-
   let _currentPlayer = _player1;
 
   const addEventListeners = () => {
     const tiles = document.getElementsByClassName("tile");
     const tilesArray = Array.from(tiles);
+
     tilesArray.forEach((tile, index) => {
       if (tile.innerText !== "") {
         return;
       }
+
       tile.addEventListener("click", () => {
         gameboard.updateBoard(_currentPlayer.getMarker(), index);
         gameboard.displayBoard();
@@ -91,6 +92,7 @@ const game = (() => {
     } else {
       _currentPlayer = _player1;
     }
+
     game.addEventListeners();
   };
 
@@ -111,6 +113,7 @@ const game = (() => {
     ) {
       endingText.innerText = `${_currentPlayer.getName()} wins the game!`;
       document.querySelector(".ending-area").appendChild(endingText);
+
       setTimeout(() => {
         document.querySelector(".gameboard").classList.add("hide");
         document.querySelector(".game-form").classList.remove("hide");
@@ -120,6 +123,7 @@ const game = (() => {
     } else if (boardState.every((tile) => tile !== null)) {
       endingText.innerText = "It is a Tie!";
       document.querySelector(".ending-area").appendChild(endingText);
+
       setTimeout(() => {
         document.querySelector(".gameboard").classList.add("hide");
         document.querySelector(".game-form").classList.remove("hide");
