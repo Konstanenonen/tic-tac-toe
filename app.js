@@ -39,6 +39,10 @@ const gameboard = (() => {
     _gameboardArray[index] = marker;
   };
 
+  const resetBoard = () => {
+    _gameboardArray = [null, null, null, null, null, null, null, null, null];
+  }
+
   const displayBoard = () => {
     const boardContainer = document.querySelector(".gameboard");
     boardContainer.innerHTML = "";
@@ -54,6 +58,7 @@ const gameboard = (() => {
     updateBoard,
     getBoardState,
     displayBoard,
+    resetBoard
   };
 })();
 
@@ -64,7 +69,7 @@ const game = (() => {
 
   let _currentPlayer = _player1;
 
-  const addEventListeners = (marker) => {
+  const addEventListeners = () => {
     const tiles = document.getElementsByClassName("tile");
     const tilesArray = Array.from(tiles);
     tilesArray.forEach((tile, index) => {
@@ -72,9 +77,10 @@ const game = (() => {
         return;
       }
       tile.addEventListener("click", () => {
-        gameboard.updateBoard(marker, index);
-        game.changeTurn();
+        gameboard.updateBoard(_currentPlayer.getMarker(), index);
+        gameboard.displayBoard();
         game.checkForEnd();
+        game.changeTurn();
       });
     });
   };
@@ -85,13 +91,13 @@ const game = (() => {
     } else {
       _currentPlayer = _player1;
     }
-
-    gameboard.displayBoard();
-    game.addEventListeners(_currentPlayer.getMarker());
+    game.addEventListeners();
   };
 
   const checkForEnd = () => {
     const boardState = gameboard.getBoardState();
+    const endingText = document.createElement("p");
+    endingText.classList.add("end-text");
 
     if (
       (boardState[0] === boardState[1] && boardState[1] === boardState[2] && boardState[1] !== null) ||
@@ -103,21 +109,44 @@ const game = (() => {
       (boardState[0] === boardState[4] && boardState[4] === boardState[8] && boardState[4] !== null) ||
       (boardState[2] === boardState[4] && boardState[4] === boardState[6] && boardState[4] !== null)
     ) {
-      console.log("Win");
+      endingText.innerText = `${_currentPlayer.getName()} wins the game!`;
+      document.querySelector(".ending-area").appendChild(endingText);
+      setTimeout(() => {
+        document.querySelector(".gameboard").classList.add("hide");
+        document.querySelector(".game-form").classList.remove("hide");
+        document.querySelector(".first").innerText = "Player 1 = X"
+        document.querySelector(".second").innerText = "Player 2 = O"
+      }, 1000);
     } else if (boardState.every((tile) => tile !== null)) {
-      console.log("It's a tie!");
+      endingText.innerText = "It is a Tie!";
+      document.querySelector(".ending-area").appendChild(endingText);
+      setTimeout(() => {
+        document.querySelector(".gameboard").classList.add("hide");
+        document.querySelector(".game-form").classList.remove("hide");
+        document.querySelector(".first").innerText = "Player 1 = X"
+        document.querySelector(".second").innerText = "Player 2 = O"
+      }, 1000);
     }
   };
 
   const startGame = () => {
-    gameboard.displayBoard();
-    game.addEventListeners(_currentPlayer.getMarker());
     document.querySelector(".game-form").addEventListener("submit", (event) => {
       event.preventDefault();
+
+      document.querySelector(".gameboard").classList.remove("hide");
+      document.querySelector(".game-form").classList.add("hide");
+      document.querySelector(".ending-area").innerHTML = "";
+
+      _currentPlayer = _player1;
+      gameboard.resetBoard();
+      gameboard.displayBoard();
+      game.addEventListeners();
+
       _player1.setName(document.getElementById("player1").value);
       _player2.setName(document.getElementById("player2").value);
 
-      document.querySelector(".display").innerText = `${_player1.getName()} = X\n${_player2.getName()} = O`;
+      document.querySelector(".first").innerText = `${_player1.getName()} = ${_player1.getMarker()}`;
+      document.querySelector(".second").innerText = `${_player2.getName()} = ${_player2.getMarker()}`;
     })
   }
 

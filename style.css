@@ -1,5 +1,4 @@
 * {
-  border: 1px solid black;
   box-sizing: border-box;
 }
 
@@ -15,4 +14,9 @@
   display: grid;
   place-items: center;
   font-size: 5rem;
+  border: 1px solid black;
+}
+
+.hide {
+  display: none;
 }
