@@ -80,7 +80,7 @@
     const _player2 = player("Player 2", "O");
     let _currentPlayer = _player1;
 
-    const addEventListeners = () => {
+    const _addEventListeners = () => {
       const tiles = document.getElementsByClassName("tile");
       const tilesArray = Array.from(tiles);
 
@@ -92,23 +92,23 @@
         tile.addEventListener("click", () => {
           board.updateBoard(_currentPlayer.getMarker(), index);
           board.displayBoard();
-          game.checkForEnd();
-          game.changeTurn();
+          _checkForEnd();
+          _changeTurn();
         });
       });
     };
 
-    const changeTurn = () => {
+    const _changeTurn = () => {
       if (_currentPlayer === _player1) {
         _currentPlayer = _player2;
       } else {
         _currentPlayer = _player1;
       }
 
-      game.addEventListeners();
+      _addEventListeners();
     };
 
-    const checkForEnd = () => {
+    const _checkForEnd = () => {
       const boardState = board.getBoardState();
       const endingText = document.createElement("p");
       endingText.classList.add("end-text");
@@ -158,7 +158,7 @@
           _currentPlayer = _player1;
           board.resetBoard();
           board.displayBoard();
-          game.addEventListeners();
+          _addEventListeners();
 
           _player1.setName(document.getElementById("player1").value);
           _player2.setName(document.getElementById("player2").value);
@@ -173,9 +173,6 @@
     };
 
     return {
-      changeTurn,
-      addEventListeners,
-      checkForEnd,
       startGame,
     };
   })(gameboard, Player);
