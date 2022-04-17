@@ -68,6 +68,7 @@ body {
   font-family: 'Titillium Web', sans-serif;
 }
 
+/* Top area */
 .display {
   width: 100%;
   display: flex;
@@ -81,6 +82,7 @@ body {
   color: white;
 }
 
+/* The form before game starts */
 .game-form {
   display: grid;
   grid-template-rows: repeat(3, 75px);
@@ -114,6 +116,7 @@ body {
   background-color: rgb(45, 78, 105);
 }
 
+/* The gameboard area */
 .gameboard {
   font-family: 'Square Peg', cursive;
   width: 300px;
@@ -135,6 +138,7 @@ body {
   background-color: rgb(245, 245, 245);
 }
 
+/* Helper class to toggle visibilyt */
 .hide {
   display: none;
 }
