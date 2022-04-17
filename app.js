@@ -76,6 +76,7 @@
 
   // Module to actually play the game
   const game = ((board, player) => {
+    let _gameOver = false;
     const _player1 = player("Player 1", "X");
     const _player2 = player("Player 2", "O");
     let _currentPlayer = _player1;
@@ -85,11 +86,11 @@
       const tilesArray = Array.from(tiles);
 
       tilesArray.forEach((tile, index) => {
-        if (tile.innerText !== "") {
-          return;
-        }
+        if (tile.innerText !== "") return;
 
         tile.addEventListener("click", () => {
+          if (_gameOver) return;
+
           board.updateBoard(_currentPlayer.getMarker(), index);
           board.displayBoard();
           _checkForEnd();
@@ -123,6 +124,8 @@
         (boardState[0] === boardState[4] && boardState[4] === boardState[8] && boardState[4] !== null) ||
         (boardState[2] === boardState[4] && boardState[4] === boardState[6] && boardState[4] !== null)
       ) {
+        _gameOver = true;
+
         endingText.innerText = `${_currentPlayer.getName()} wins the game!`;
         document.querySelector(".ending-area").appendChild(endingText);
 
@@ -133,6 +136,8 @@
           document.querySelector(".second").innerText = "Player 2 = O";
         }, 2000);
       } else if (boardState.every((tile) => tile !== null)) {
+        _gameOver = true;
+        
         endingText.innerText = "It is a Tie!";
         document.querySelector(".ending-area").appendChild(endingText);
 
@@ -150,6 +155,8 @@
         .querySelector(".game-form")
         .addEventListener("submit", (event) => {
           event.preventDefault();
+
+          _gameOver = false;
 
           document.querySelector(".gameboard").classList.remove("hide");
           document.querySelector(".game-form").classList.add("hide");
