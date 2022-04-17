@@ -119,7 +119,7 @@ const game = (() => {
         document.querySelector(".game-form").classList.remove("hide");
         document.querySelector(".first").innerText = "Player 1 = X"
         document.querySelector(".second").innerText = "Player 2 = O"
-      }, 1000);
+      }, 2000);
     } else if (boardState.every((tile) => tile !== null)) {
       endingText.innerText = "It is a Tie!";
       document.querySelector(".ending-area").appendChild(endingText);
@@ -129,7 +129,7 @@ const game = (() => {
         document.querySelector(".game-form").classList.remove("hide");
         document.querySelector(".first").innerText = "Player 1 = X"
         document.querySelector(".second").innerText = "Player 2 = O"
-      }, 1000);
+      }, 2000);
     }
   };
 
